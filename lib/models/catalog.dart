@@ -1,20 +1,26 @@
+
+
+
+// ignore_for_file: unnecessary_null_comparison
+
 import 'dart:convert';
 
-import 'package:app_catalog/widgets/item_widget.dart';
-
 class CatalogModel {
+  static final catModel = CatalogModel._internal();
+
+  CatalogModel._internal();
+
+  factory CatalogModel() => catModel;
+
   static List<Item>? items;
 
-  //get item by id
-    Item getById(int id) =>
+  // Get Item by ID
+  Item getById(int id) =>
       items!.firstWhere((element) => element.id == id, orElse: null);
 
-   Item getByPosition(int pos) =>
-      items![pos];
-
-
+  // Get Item by position
+  Item getByPosition(int pos) => items![pos];
 }
-
 
 class Item {
   final int id;
@@ -33,21 +39,21 @@ class Item {
     required this.image,
   });
 
-  Item copyWith({
-    int? id,
-    String? name,
-    String? desc,
-    num? price,
-    String? color,
-    String? image,
-  }) {
+  Future<Item> copyWith({
+    required int id,
+    required String name,
+    required String desc,
+    required num price,
+    required String color,
+    required String image,
+  }) async {
     return Item(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      desc: desc ?? this.desc,
-      price: price ?? this.price,
-      color: color ?? this.color,
-      image: image ?? this.image,
+      id: id,
+      name: name,
+      desc: desc,
+      price: price,
+      color: color,
+      image: image,
     );
   }
 
@@ -63,6 +69,8 @@ class Item {
   }
 
   factory Item.fromMap(Map<String, dynamic> map) {
+    // ignore: null_check_always_fails
+    if (map == null) return null!;
 
     return Item(
       id: map['id'],
